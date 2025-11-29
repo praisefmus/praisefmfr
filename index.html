@@ -74,7 +74,7 @@
 </head>
 <body>
 
-<!-- 🔽 Locale Banner (FR → DE / CH) -->
+<!-- 🔽 Locale Banner Francês -->
 <style>
   #praisefm-locale-bar {
     position: fixed;
@@ -129,7 +129,7 @@
   }
 </style>
 
-<div id="praisefm-locale-bar" role="region" aria-label="Locale switch banner" style="display:none;">
+<div id="praisefm-locale-bar" role="region" aria-label="Locale switch banner">
   <div class="pfm-message">
     <strong>Bonjour ! Vous êtes en France.</strong>
     <div style="opacity:0.9; margin-top:4px; font-size:13px;">
@@ -137,62 +137,12 @@
     </div>
   </div>
   <div class="pfm-actions">
-    <button class="pfm-cta" id="pfm-go-de">🇩🇪 Allemagne</button>
-    <button class="pfm-cta" id="pfm-go-ch">🇨🇭 Suisse</button>
-    <button class="pfm-close" id="pfm-close" aria-label="Fermer">&times;</button>
+    <a href="https://praisefmde.vercel.app" class="pfm-cta" style="text-decoration:none; display:inline-block; padding:8px 12px;">🇩🇪 Allemagne</a>
+    <a href="https://praisefmch-fr.vercel.app" class="pfm-cta" style="text-decoration:none; display:inline-block; padding:8px 12px;">🇨🇭 Suisse (FR)</a>
+    <a href="https://praisefmch-de.vercel.app" class="pfm-cta" style="text-decoration:none; display:inline-block; padding:8px 12px;">🇨🇭 Suisse (DE)</a>
   </div>
 </div>
-<div class="pfm-bar-shim" id="pfm-bar-shim"></div>
-
-<script>
-(function(){
-  const DE_URL = "https://praisefmde.vercel.app";
-  const CH_URL = "https://praisefmch.vercel.app";
-  const STORAGE_KEY = "praisefm_locale_banner_closed_v1";
-  const EXPIRE_DAYS = 30;
-
-  function isClosed() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return false;
-      const obj = JSON.parse(raw);
-      return obj?.ts && (Date.now() - obj.ts) < (EXPIRE_DAYS * 24 * 60 * 60 * 1000);
-    } catch (e) { return false; }
-  }
-
-  if (isClosed()) return;
-  if (!location.hostname.includes("praisefmfr")) return;
-
-  const bar = document.getElementById("praisefm-locale-bar");
-  const shim = document.getElementById("pfm-bar-shim");
-  if (!bar) return;
-
-  bar.style.display = "flex";
-  shim.style.display = "block";
-
-  document.getElementById("pfm-go-de").addEventListener("click", () => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ts: Date.now()})); } catch(e){}
-    window.location.href = DE_URL;
-  });
-  document.getElementById("pfm-go-ch").addEventListener("click", () => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ts: Date.now()})); } catch(e){}
-    window.location.href = CH_URL;
-  });
-  document.getElementById("pfm-close").addEventListener("click", () => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ts: Date.now()})); } catch(e){}
-    bar.style.display = "none";
-    shim.style.display = "none";
-  });
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ts: Date.now()})); } catch(e){}
-      bar.style.display = "none";
-      shim.style.display = "none";
-    }
-  });
-})();
-</script>
-<!-- 🔼 FIM DO BANNER -->
+<div class="pfm-bar-shim"></div>
 
 <div class="container">
     <h1 class="station-title">Praise FM</h1>
@@ -270,8 +220,8 @@
         </div>
     </div>
 </div>
+
 <script>
-    // STREAM (igual ao original dos EUA)
     const STREAM_URL = "https://stream.zeno.fm/hvwifp8ezc6tv";
     const audio = new Audio(STREAM_URL);
     audio.volume = 0.8;
@@ -297,21 +247,48 @@
         "Praise FM Non Stop": "Praise FM",
         "Praise FM Worship": "Praise FM"
     };
+    // 🔁 Programação corrigida + sábado no Morning Show
     const schedule = [
-        {start:"00:00", end:"06:00", name:"Midnight Grace", img:images.midnight, desc: "Daniel Brooks lays down the most soothing overnight praise vibes."},
-        {start:"06:00", end:"07:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM plays the finest worship music."},
-        {start:"07:00", end:"12:00", name:"Morning Show", img:images.morning, days:[1,2,3,4,5], desc: "Stancy Campbell kickstarts your day with uplifting praise and inspiration."},
-        {start:"07:00", end:"12:00", name:"Sunday With Christ", img:images.sunday, days:[0], desc: "Matt Riley shares spiritual insights and Sunday music."},
-        {start:"12:00", end:"16:00", name:"Midday Grace", img:images.midday, desc: "Michael Ray brings grace and tunes through the midday."},
-        {start:"16:00", end:"17:00", name:"Praise FM Non Stop", img:images.nonstop, desc: "Praise FM with non-stop praise hits."},
-        {start:"17:00", end:"18:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM plays the finest worship music."},
-        {start:"18:00", end:"20:00", name:"Praise FM Carpool", img:images.carpool, days:[1,2,3,4,5], desc: "Rachael Harris with praise tunes for your drive home."},
-        {start:"20:00", end:"20:30", name:"Praise FM POP", img:images.pop, desc: "Jordan Reys with all things pop and contemporary praise."},
-        {start:"20:30", end:"20:31", name:"Praise FM Magazine", img:images.magazine, days:[0], desc: "Praise FM with magazine-style content and features."},
-        {start:"20:30", end:"21:30", name:"Praise FM Non Stop", img:images.nonstop, days:[1,2,3,4,5,6], desc: "Praise FM with non-stop praise hits."},
-        {start:"21:30", end:"00:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM plays the finest worship music."}
+        {start:"00:00", end:"03:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM diffuse la meilleure musique d'adoration."},
+        {start:"03:00", end:"06:00", name:"Midnight Grace", img:images.midnight, desc: "Daniel Brooks vous propose une louange apaisante toute la nuit."},
+        {start:"06:00", end:"07:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM diffuse la meilleure musique d'adoration."},
+        {start:"07:00", end:"12:00", name:"Morning Show", img:images.morning, days:[1,2,3,4,5,6], desc: "Stancy Campbell lance votre journée avec de la louange inspirante."},
+        {start:"07:00", end:"12:00", name:"Sunday With Christ", img:images.sunday, days:[0], desc: "Matt Riley partage des réflexions spirituelles et de la musique dominicale."},
+        {start:"12:00", end:"16:00", name:"Midday Grace", img:images.midday, desc: "Michael Ray vous accompagne avec grâce et musique en milieu de journée."},
+        {start:"16:00", end:"17:00", name:"Praise FM Non Stop", img:images.nonstop, desc: "Praise FM en continu avec les meilleurs titres de louange."},
+        {start:"17:00", end:"18:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM diffuse la meilleure musique d'adoration."},
+        {start:"18:00", end:"20:00", name:"Praise FM Carpool", img:images.carpool, days:[1,2,3,4,5], desc: "Rachael Harris vous accompagne avec de la louange pour votre retour à la maison."},
+        {start:"20:00", end:"20:30", name:"Praise FM POP", img:images.pop, desc: "Jordan Reys présente tout ce qui est pop et louange contemporaine."},
+        {start:"20:30", end:"20:31", name:"Praise FM Magazine", img:images.magazine, days:[0], desc: "Praise FM avec du contenu sous forme de magazine et des reportages."},
+        {start:"20:30", end:"21:30", name:"Praise FM Non Stop", img:images.nonstop, days:[1,2,3,4,5,6], desc: "Praise FM en continu avec les meilleurs titres de louange."},
+        {start:"21:30", end:"00:00", name:"Praise FM Worship", img:images.worship, desc: "Praise FM diffuse la meilleure musique d'adoration."}
     ];
-    // ⚠️ IMPORTANTE: Mantém o fuso horário dos EUA (America/Chicago)
+
+    // 🔁 Traduções para exibição
+    const programNames = {
+        "Midnight Grace": "Grâce de Minuit",
+        "Morning Show": "Émission du Matin",
+        "Midday Grace": "Grâce de Midi",
+        "Praise FM Non Stop": "Praise FM Sans Arrêt",
+        "Praise FM Worship": "Praise FM Adoration",
+        "Praise FM Carpool": "Praise FM Covoiturage",
+        "Praise FM POP": "Praise FM POP",
+        "Sunday With Christ": "Dimanche avec Christ",
+        "Praise FM Magazine": "Praise FM Magazine"
+    };
+    const descriptionsFR = {
+        "Daniel Brooks lays down the most soothing overnight praise vibes.": "Daniel Brooks vous propose une louange apaisante toute la nuit.",
+        "Stancy Campbell kickstarts your day with uplifting praise and inspiration.": "Stancy Campbell lance votre journée avec de la louange inspirante.",
+        "Michael Ray brings grace and tunes through the midday.": "Michael Ray vous accompagne avec grâce et musique en milieu de journée.",
+        "Praise FM with non-stop praise hits.": "Praise FM en continu avec les meilleurs titres de louange.",
+        "Praise FM plays the finest worship music.": "Praise FM diffuse la meilleure musique d'adoration.",
+        "Rachael Harris with praise tunes for your drive home.": "Rachael Harris vous accompagne avec de la louange pour votre retour à la maison.",
+        "Jordan Reys with all things pop and contemporary praise.": "Jordan Reys présente tout ce qui est pop et louange contemporaine.",
+        "Matt Riley shares spiritual insights and Sunday music.": "Matt Riley partage des réflexions spirituelles et de la musique dominicale.",
+        "Praise FM with magazine-style content and features.": "Praise FM avec du contenu sous forme de magazine et des reportages."
+    };
+
+    // ⚙️ Funções principais
     function getTime() { return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Chicago"})); }
     function timeToMins(t) { const [h,m]=t.split(":").map(Number); return h*60+m; }
     function getCurrentAndNext() {
@@ -338,14 +315,30 @@
         }
         future.sort((a,b) => a.startMins - b.startMins);
         return {
-            current: current || {name:"Praise FM", img:images.default, start:null, end:null},
+            current: current || {name:"Praise FM", img:images.default, start:null, end:null, desc:""},
             next1: future[0]?.prog || schedule[0],
             next2: future[1]?.prog || schedule[1]
         };
     }
-    let currentTrack = {title:"", artist:"", duration:0, startTime:0};
-    const recents = [];
-    let trackTimer = null;
+    function formatProgramName(p) {
+        if (!p) return "Praise FM";
+        const base = p.name.replace(/ \([^)]*\)$/, '').trim();
+        const translated = programNames[base] || base;
+        if (["Praise FM Non Stop", "Praise FM POP", "Praise FM Magazine", "Praise FM Worship", "Praise FM"].includes(base)) {
+            return translated;
+        }
+        const host = hosts[base] || "Praise FM";
+        return `${translated} avec ${host}`;
+    }
+    function formatRange(p) {
+        const [sh, sm] = p.start.split(":").map(Number);
+        const [eh, em] = p.end.split(":").map(Number);
+        const sSuffix = sh >= 12 ? "PM" : "AM";
+        const eSuffix = eh >= 12 ? "PM" : "AM";
+        const sHour = ((sh + 11) % 12) + 1;
+        const eHour = ((eh + 11) % 12) + 1;
+        return `${sHour}:${sm.toString().padStart(2,'0')} ${sSuffix} - ${eHour}:${em.toString().padStart(2,'0')} ${eSuffix}`;
+    }
     function formatTime(seconds) {
         const min = Math.floor(seconds / 60);
         const sec = Math.floor(seconds % 60);
@@ -377,46 +370,15 @@
         try {
             const res = await fetch(url);
             const data = await res.json();
-            if (data.results && data.results[0] && data.results[0].artworkUrl100) {
+            if (data.results?.[0]?.artworkUrl100) {
                 return data.results[0].artworkUrl100.replace('100x100', '600x600');
             }
         } catch (e) {}
         return images.default;
     }
-    // ✅ TRADUÇÃO DOS NOMES DOS PROGRAMAS (apenas na exibição)
-    const programNames = {
-        "Midnight Grace": "Grâce de Minuit",
-        "Morning Show": "Émission du Matin",
-        "Midday Grace": "Grâce de Midi",
-        "Praise FM Non Stop": "Praise FM Sans Arrêt",
-        "Praise FM Worship": "Praise FM Adoration",
-        "Praise FM Carpool": "Praise FM Covoiturage",
-        "Praise FM POP": "Praise FM POP",
-        "Sunday With Christ": "Dimanche avec Christ",
-        "Praise FM Magazine": "Praise FM Magazine"
-    };
-    function formatProgramName(p) {
-        if (!p) return "Praise FM";
-        const base = p.name.replace(/ \([^)]*\)$/, '').trim();
-        // Traduzir somente na exibição
-        const translated = programNames[base] || base;
-        // Programas sem apresentador
-        if (["Praise FM Non Stop", "Praise FM POP", "Praise FM Magazine", "Praise FM Worship"].includes(base)) {
-            return translated;
-        }
-        // Programas com apresentador
-        const host = hosts[base] || "Praise FM";
-        return `${translated} avec ${host}`;
-    }
-    function formatRange(p) {
-        const [sh, sm] = p.start.split(":").map(Number);
-        const [eh, em] = p.end.split(":").map(Number);
-        const sSuffix = sh >= 12 ? "PM" : "AM";
-        const eSuffix = eh >= 12 ? "PM" : "AM";
-        const sHour = ((sh + 11) % 12) + 1;
-        const eHour = ((eh + 11) % 12) + 1;
-        return `${sHour}:${sm.toString().padStart(2,'0')} ${sSuffix} - ${eHour}:${em.toString().padStart(2,'0')} ${eSuffix}`;
-    }
+    let currentTrack = {title:"", artist:"", duration:0, startTime:0};
+    const recents = [];
+    let trackTimer = null;
     async function processMetadata(artist, title) {
         if (trackTimer) clearInterval(trackTimer);
         if (title.toLowerCase().includes("commercial") || title.toLowerCase().includes("ad")) {
@@ -491,12 +453,12 @@
         document.getElementById("programTitle").textContent = displayName;
         document.getElementById("miniTitle").textContent = currentTrack.title ? currentTrack.title : displayName;
         document.getElementById("miniArtist").textContent = currentTrack.artist ? currentTrack.artist : "Louange & Adoration";
-        document.getElementById("upnextTime1").textContent = "UP NEXT: " + formatRange(next1);
+        document.getElementById("upnextTime1").textContent = "À VENIR : " + formatRange(next1);
         document.getElementById("upnextTitle1").textContent = formatProgramName(next1);
-        document.getElementById("upnextDesc1").textContent = next1.desc || "-";
+        document.getElementById("upnextDesc1").textContent = descriptionsFR[next1.desc] || next1.desc || "-";
         document.getElementById("upnextTime2").textContent = formatRange(next2);
         document.getElementById("upnextTitle2").textContent = formatProgramName(next2);
-        document.getElementById("upnextDesc2").textContent = next2.desc || "-";
+        document.getElementById("upnextDesc2").textContent = descriptionsFR[next2.desc] || next2.desc || "-";
         if (current.start && current.end) {
             const s = timeToMins(current.start);
             const e = timeToMins(current.end);
