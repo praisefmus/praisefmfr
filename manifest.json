@@ -1,13 +1,13 @@
 {
-  "name": "Praise FM U.S.",
+  "name": "Praise FM Australia",
   "short_name": "Praise FM",
-  "description": "Live Praise & Worship Radio – Praise FM United States",
+  "description": "Live Praise & Worship Radio – Praise FM Australia",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
-  "theme_color": "#007aff",
-  "lang": "en-US",
+  "theme_color": "#ffcc00",
+  "lang": "en-AU",
   "icons": [
     {
       "src": "/image/praisefm-192.png",
